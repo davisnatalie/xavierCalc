@@ -1,0 +1,113 @@
+body {
+    background-color: grey;
+    font-size: calc(15px + 0.390625vw);
+}
+
+div {
+    width: 550px;
+    margin: 20px auto;
+    padding-top: 15px;
+    background-color:grey;
+    height: auto;
+    text-align: center;
+    font-family: sans-serif;
+    color: #3e4aa2;
+    border-radius: 10px;
+    border: 3px solid #3e4aa2;
+    box-shadow: 5px 5px 5px #3e4aa2; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    font-size: 1em;
+    padding: 5px 5px 5px 8px;
+    display: block;
+    width: 225px;
+    margin: 10px;
+}
+
+button,
+select {
+    font-size: 1em;
+    display: block;
+    margin: 25px 10px;
+    width: 240px;
+}
+
+button {
+    text-transform: uppercase;
+    background-color: #3e4aa2;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #fff;
+    cursor: pointer;
+}
+/* target inputs of type="number" only */
+
+input[type="number"] {
+    width: 60px;
+    /* wide enough for 4 big digits */
+    font-size: 1em;
+    display: inline;
+    /* margin: 5px 50px; */
+}
+
+
+
+label {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-left: 0;
+}
+
+
+select {
+    font-size: 1.1rem;
+    background-color: #3e4aa2;;
+    color: white;
+    width: 250px;
+    padding:5px;
+}
+
+table {
+    border-collapse: collapse;
+    width: auto;
+  }
+
+  th, td {
+    border: 1px;
+    text-align: center;
+    width: 100px;
+  }
+
+  input[type="number"] {
+    width: 50px; /* Set input box width to 50px */
+    text-align: center;
+  }
+
+  tfoot tr {
+    line-height: 2em; /* Adjust the value as needed */
+    font-weight: bold;
+  }
+
+  @media (max-width: 600px) {
+    /* Adjustments for smaller screens */
+    body {
+      font-size: 14px; /* Adjust the font size */
+    }
+  
+    #daySelect,
+    #ticketPrice {
+      width: 100%; /* Make input fields occupy full width */
+      margin-bottom: 10px; /* Add space between elements */
+    }
+  
+    table,
+    th,
+    td {
+      width: 100%; /* Make the table occupy full width */
+      text-align: center; /* Center-align table content */
+    }
+  }

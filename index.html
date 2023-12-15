@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/index.css">
+  <title>Event Calculator</title>
+  <style>
+    
+  </style>
+</head>
+<body>
+    
+    <div>
+        <img src="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg" srcset="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg 1x" width="281" height="100" alt="Xavier Mission Logo" data-retina_logo_url="" class="fusion-standard-logo">
+        <h1>Bowling Event Profit Calculator</h1>
+        <!-- <label for="daySelect">Day of the Week</label> -->
+        <select id="daySelect" onchange="updateCost()">
+            <option>Select a Day..</option>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+        </select>
+        <br>
+        <br>
+        <label for="ticketPrice">Ticket Price:</label>
+        <input type="number" id="ticketPrice" value="60" oninput="updateCost()">
+        <br>
+        <br>
+        <table id="committeeTable">
+        <thead>
+            <tr>
+            <th>Committe Member</th>
+            <th>Guest Commit</th>
+            <th>Income</th>
+            </tr>
+        </thead>
+        <tbody id="committeeBody">
+            <!-- Table body will be generated here -->
+        </tbody>
+        <tfoot>
+            <tr>
+            <td colspan="3">Total Income: <span id="totalIncome">0</span></td>
+            </tr>
+            <tr>
+            <td colspan="3">Cost: <span id="dayCost">$0</span></td>
+            </tr>
+            <tr>
+            <td colspan="3">Profit: <span id="profit">0</span></td>
+            </tr>
+        </tfoot>
+        </table>
+</div>
+<script>
+  let committeeMembers = [
+    { name: 'Alaina', commitment: 1 },
+    { name: 'Ashleigh', commitment: 1 },
+    { name: 'David', commitment: 1 },
+    { name: 'Ellie', commitment: 1 },
+    { name: 'Joel', commitment: 1 },
+    { name: 'Jon', commitment: 1 },
+    { name: 'Justine', commitment: 1 },
+    { name: 'Natalie', commitment: 1 },
+    { name: 'Ryan', commitment: 1 }
+  ];
+
+  const dayCosts = {
+    Monday: 500,
+    Tuesday: 700,
+    Wednesday: 900,
+    Thursday: 1150,
+    Friday: 1150,
+    Saturday: 1150,
+    Sunday: 500,
+    default: 0,
+  };
+
+  function generateTable() {
+    committeeMembers.sort((a, b) => a.name.localeCompare(b.name));
+    const tableBody = document.getElementById('committeeBody');
+
+    committeeMembers.forEach(member => {
+      const row = document.createElement('tr');
+      const nameCell = document.createElement('td');
+      nameCell.textContent = member.name;
+      row.appendChild(nameCell);
+
+      const commitmentCell = document.createElement('td');
+      const commitmentInput = document.createElement('input');
+      commitmentInput.type = 'number';
+      commitmentInput.id = `${member.name.toLowerCase()}Commitment`;
+      commitmentInput.value = member.commitment;
+      commitmentInput.oninput = calculateIncome;
+      commitmentCell.appendChild(commitmentInput);
+      row.appendChild(commitmentCell);
+
+      const incomeCell = document.createElement('td');
+      incomeCell.id = `${member.name.toLowerCase()}Income`;
+      row.appendChild(incomeCell);
+
+      tableBody.appendChild(row);
+    });
+  }
+
+  function updateCost() {
+    const daySelect = document.getElementById('daySelect');
+    const ticketPrice = document.getElementById('ticketPrice').value;
+    let cost = getCostByDay(daySelect.value);
+    const dayCostSpan = document.getElementById('dayCost');
+    dayCostSpan.textContent = '$' + cost;
+
+    calculateIncome();
+  }
+
+  function getCostByDay(day) {
+    return dayCosts[day] || dayCosts.default;
+  }
+
+  function calculateIncome() {
+    let totalIncome = 0;
+    const ticketPrice = parseFloat(document.getElementById('ticketPrice').value) || 0;
+    const dayCost = getCostByDay(document.getElementById('daySelect').value);
+
+    committeeMembers.forEach(member => {
+      const commitmentInput = document.getElementById(`${member.name.toLowerCase()}Commitment`);
+      const commitment = parseFloat(commitmentInput.value) || 0;
+
+      const income = ticketPrice * commitment;
+      totalIncome += income;
+
+      const incomeCell = document.getElementById(`${member.name.toLowerCase()}Income`);
+      incomeCell.textContent = '$' + income;
+    });
+
+    const totalIncomeSpan = document.getElementById('totalIncome');
+    totalIncomeSpan.textContent = '$' + totalIncome;
+
+    const profit = totalIncome - dayCost;
+    const profitSpan = document.getElementById('profit');
+    profitSpan.textContent = '$' + profit;
+  }
+
+  generateTable();
+</script>
+
+</body>
+</html>
