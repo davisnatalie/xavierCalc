@@ -12,7 +12,8 @@
     
     <div>
         <img src="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg" srcset="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg 1x" width="281" height="100" alt="Xavier Mission Logo" data-retina_logo_url="" class="fusion-standard-logo">
-        <h1>Bowling Event Profit Calculator</h1>
+        <h2>Bowling Event Profit Calculator</h2>
+        <p>
         <!-- <label for="daySelect">Day of the Week</label> -->
         <select id="daySelect" onchange="updateCost()">
             <option>Select a Day..</option>
@@ -24,16 +25,13 @@
         <option value="Saturday">Saturday</option>
         <option value="Sunday">Sunday</option>
         </select>
-        <br>
-        <br>
-        <label for="ticketPrice">Ticket Price:</label>
+        Ticket Price:
         <input type="number" id="ticketPrice" value="60" oninput="updateCost()">
-        <br>
         <br>
         <table id="committeeTable">
         <thead>
             <tr>
-            <th>Committe Member</th>
+            <th>Committee Member</th>
             <th>Guest Commit</th>
             <th>Income</th>
             </tr>
@@ -53,6 +51,7 @@
             </tr>
         </tfoot>
         </table>
+      </p>
 </div>
 <script>
   let committeeMembers = [

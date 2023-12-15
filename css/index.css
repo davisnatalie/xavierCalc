@@ -4,7 +4,7 @@ body {
 }
 
 div {
-    width: 550px;
+    width: 600px;
     margin: 20px auto;
     padding-top: 15px;
     background-color:grey;
@@ -21,28 +21,10 @@ div {
 }
 
 input {
-    font-size: 1em;
     padding: 5px 5px 5px 8px;
     display: block;
     width: 225px;
     margin: 10px;
-}
-
-button,
-select {
-    font-size: 1em;
-    display: block;
-    margin: 25px 10px;
-    width: 240px;
-}
-
-button {
-    text-transform: uppercase;
-    background-color: #3e4aa2;
-    font-weight: bold;
-    letter-spacing: 2px;
-    color: #fff;
-    cursor: pointer;
 }
 /* target inputs of type="number" only */
 
@@ -55,16 +37,14 @@ input[type="number"] {
 }
 
 
-
 label {
-    font-size: 1.1em;
     font-weight: bold;
     margin-left: 0;
 }
 
 
 select {
-    font-size: 1.1rem;
+    font-size: 1rem;
     background-color: #3e4aa2;;
     color: white;
     width: 250px;
@@ -76,10 +56,12 @@ table {
     width: auto;
   }
 
+
   th, td {
     border: 1px;
     text-align: center;
-    width: 100px;
+    width: 200px;
+    padding: 2px;
   }
 
   input[type="number"] {
