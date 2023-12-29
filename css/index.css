@@ -51,6 +51,16 @@ select {
     padding:5px;
 }
 
+h4 {
+  text-align: left;
+  width: 400px;
+  padding: 10px;
+}
+
+h4.with-border {
+  border: 1px solid white;
+}
+
 table {
     border-collapse: collapse;
     width: auto;
