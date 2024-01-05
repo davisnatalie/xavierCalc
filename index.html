@@ -9,20 +9,53 @@
   </style>
 </head>
 <body>
-  <div>
-    <img src="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg" srcset="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg 1x" width="281" height="100" alt="Xavier Mission Logo" data-retina_logo_url="" class="fusion-standard-logo">
-    <h2>Bowling Event Profit Calculator</h2>
-    <p>
-      <select id="daySelect" onchange="updateCost()">
-        <option>Select an Option</option>
-        <option value="monTues">Monday/Tuesday after 5PM</option>
-        <option value="Monday">Monday</option>
-        <option value="Executive">Executive</option>
-      </select>
-      Ticket Price:
-      <input type="number" id="ticketPrice" value="60" oninput="updateCost()">
-      <h4></h4>
-      <table id="committeeTable">
+  <header>
+    <img src="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg" srcset="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg 1x" width="281" height="100" alt="Xavier Mission Logo" data-retina_logo_url="" class="fusion-standard-logo" item-align="center">
+  </header>
+  <div id="container">
+
+    <div id="left">
+
+        <h2>Bowling Event Profit Calculator</h2>
+        <p>
+          <select id="daySelect" onchange="updateCost()">
+            <option>Select an Option</option>
+            <option value="monTues">Monday/Tuesday after 5PM</option>
+            <option value="Monday">Monday</option>
+            <option value="monFood">Monday Food</option>
+            <option value="Executive">Executive</option>
+          </select>
+          <br>
+          Early Bird:
+          <input type="number" id="earlyPrice" value="65" oninput="updateCost()">
+          Regular:
+          <input type="number" id="stdPrice" value="75" oninput="updateCost()">
+          <h4></h4>
+          <table>
+            <tr>
+              <td style="text-align: left;"><strong>Guest Goal:</strong></td>
+              <td style="text-align: left;">40</td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Total Guests:</strong></td>
+              <td style="text-align: left;"><span id="totalCommitment">0</span></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Total Cost:</strong></td>
+              <td style="text-align: left;"><span id="dayCost">$0</span></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Total Income:</strong></td>
+              <td style="text-align: left;"><span id="totalIncome">$0</span></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;"><strong>Profit:</strong></td>
+              <td style="text-align: left;"><span id="profit">0</span></td>
+            </tr>
+          </table>
+    </div>
+    
+    <table id="committeeTable">
         <thead>
           <tr>
             <th>Committee Member</th>
@@ -33,139 +66,12 @@
         <tbody id="committeeBody">
           <!-- Table body will be generated here -->
         </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="3">Total Income: <span id="totalIncome">0</span></td>
-          </tr>
-          <tr>
-            <td colspan="3">Cost: <span id="dayCost">$0</span></td>
-          </tr>
-          <tr>
-            <td colspan="3">Profit: <span id="profit">0</span></td>
-          </tr>
-        </tfoot>
-      </table>
+
+    </table>
     </p>
   </div>
 
-  <script>
-    const committeeMembers = [
-      { name: 'Alaina', commitment: 1 },
-      { name: 'Ashleigh', commitment: 1 },
-      { name: 'David', commitment: 1 },
-      { name: 'Ellie', commitment: 1 },
-      { name: 'Joel', commitment: 1 },
-      { name: 'Jon', commitment: 1 },
-      { name: 'Justine', commitment: 1 },
-      { name: 'Natalie', commitment: 1 },
-      { name: 'Ryan', commitment: 1 }
-    ];
+  <script src="js\script.js"></script>
 
-    const dayCosts = {
-      monTues: 1628.54,
-      Monday: 1212.35,
-      Executive: 2080.98,
-      default: 0,
-    };
-
-    function generateTable() {
-      committeeMembers.sort((a, b) => a.name.localeCompare(b.name));
-      const tableBody = document.getElementById('committeeBody');
-
-      committeeMembers.forEach(member => {
-        const row = document.createElement('tr');
-        const nameCell = document.createElement('td');
-        nameCell.textContent = member.name;
-        row.appendChild(nameCell);
-
-        const commitmentCell = document.createElement('td');
-        const commitmentInput = document.createElement('input');
-        commitmentInput.type = 'number';
-        commitmentInput.id = `${member.name.toLowerCase()}Commitment`;
-        commitmentInput.value = member.commitment;
-        commitmentInput.addEventListener('input', calculateIncome);
-        commitmentCell.appendChild(commitmentInput);
-        row.appendChild(commitmentCell);
-
-        const incomeCell = document.createElement('td');
-        incomeCell.id = `${member.name.toLowerCase()}Income`;
-        row.appendChild(incomeCell);
-
-        tableBody.appendChild(row);
-      });
-    }
-
-    function updateCost() {
-      const daySelect = document.getElementById('daySelect');
-      const ticketPrice = parseFloat(document.getElementById('ticketPrice').value);
-      const selectedDay = daySelect.value;
-      let cost = getCostByDay(selectedDay);
-      const dayCostSpan = document.getElementById('dayCost');
-      dayCostSpan.textContent = '$' + cost;
-
-      calculateIncome();
-
-      // Update <h4> with the selected day's details
-      const h4Element = document.querySelector('h4');
-      if (selectedDay === 'monTues') {
-        h4Element.innerHTML = `<ul>Based on last year's program: <li>
-      2 hours of unlimited bowling on 3 lanes <li>
-      4 light bite platters  <li>
-      25 shoes maximum (50% discount) <li>
-      50 drink tickets (negotiable) <li>
-      Charged for high-top tables <br>
-      Total cost: $1,628.54</ul>`;
-      h4Element.classList.add('with-border');
-      } else if (selectedDay === 'Monday') {
-        h4Element.innerHTML = `<ul><li>2 hours of unlimited bowling on 3 lanes <li>
-        25 shoe rentals <li>
-        50 beer/wine/soda drink tickets <li>
-        NO Food <li>
-        NO high tops reserved <br>
-        Total cost: $1,212.35</ul>`;
-        h4Element.classList.add('with-border');
-      } else if (selectedDay === 'Executive') {
-        h4Element.innerHTML = `<ul>Discounted Premium Package <li>
-        2 hours of unlimited bowling <li>
-        25 shoe rentals <li>
-        50 PREMIUM drink tickets (house cocktail plus beer wine soda) <li>
-        3 replenished food selections <br>
-        Total cost: $2080.98</ul>`;
-        h4Element.classList.add('with-border');
-      } else {
-        h4Element.textContent = '';
-      }
-    }
-
-    function getCostByDay(day) {
-      return dayCosts[day] || dayCosts.default;
-    }
-
-    function calculateIncome() {
-      let totalIncome = 0;
-      const ticketPrice = parseFloat(document.getElementById('ticketPrice').value) || 0;
-      const dayCost = getCostByDay(document.getElementById('daySelect').value);
-
-      committeeMembers.forEach(member => {
-        const commitmentInput = document.getElementById(`${member.name.toLowerCase()}Commitment`);
-        const commitment = parseFloat(commitmentInput.value) || 0;
-
-        const income = ticketPrice * commitment;
-        totalIncome += income;
-
-        const incomeCell = document.getElementById(`${member.name.toLowerCase()}Income`);
-        incomeCell.textContent = '$' + income;
-      });
-
-      const totalIncomeSpan = document.getElementById('totalIncome');
-      totalIncomeSpan.textContent = '$' + totalIncome;
-
-      const profit = totalIncome - dayCost;
-      const profitSpan = document.getElementById('profit');
-      profitSpan.textContent = '$' + profit;
-    }
-
-    generateTable();
-  </script>
 </body>
 </html>
