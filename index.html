@@ -13,65 +13,142 @@
     <img src="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg" srcset="https://xaviermission.org/wp-content/uploads/2023/04/xavier-mission-logo-white-1.svg 1x" width="281" height="100" alt="Xavier Mission Logo" data-retina_logo_url="" class="fusion-standard-logo" item-align="center">
   </header>
   <div id="container">
-
-    <div id="left">
-
-        <h2>Bowling Event Profit Calculator</h2>
-        <p>
-          <select id="daySelect" onchange="updateCost()">
-            <option>Select an Option</option>
-            <option value="monTues">Monday/Tuesday after 5PM</option>
-            <option value="Monday">Monday</option>
-            <option value="monFood">Monday Food</option>
-            <option value="Executive">Executive</option>
-          </select>
-          <br>
-          Early Bird:
-          <input type="number" id="earlyPrice" value="65" oninput="updateCost()">
-          Regular:
-          <input type="number" id="stdPrice" value="75" oninput="updateCost()">
-          <h4></h4>
-          <table>
-            <tr>
-              <td style="text-align: left;"><strong>Guest Goal:</strong></td>
-              <td style="text-align: left;">40</td>
-            </tr>
-            <tr>
-              <td style="text-align: left;"><strong>Total Guests:</strong></td>
-              <td style="text-align: left;"><span id="totalCommitment">0</span></td>
-            </tr>
-            <tr>
-              <td style="text-align: left;"><strong>Total Cost:</strong></td>
-              <td style="text-align: left;"><span id="dayCost">$0</span></td>
-            </tr>
-            <tr>
-              <td style="text-align: left;"><strong>Total Income:</strong></td>
-              <td style="text-align: left;"><span id="totalIncome">$0</span></td>
-            </tr>
-            <tr>
-              <td style="text-align: left;"><strong>Profit:</strong></td>
-              <td style="text-align: left;"><span id="profit">0</span></td>
-            </tr>
-          </table>
+    <!-- <div id="left"> -->
+      <h2>Bowling Event Profit Calculator</h2>
+      <h3>Monday, February 26, 2024</h3>
+    <div id="center">
+      <h4><ul><li>2 hours of unlimited bowling on 3 lanes <li>50 shoe rentals<li>FOOD: 1 Full Crudite Platter, 2x Party Platters, 7x pizzas<li>NO high tops reserved<li>NO drinks </ul></h4>
+      <table>
+        <tr>
+          <td style="text-align: left;"><strong>Guest Goal:</strong></td>
+          <td style="text-align: left;">40</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Tickets:</strong></td>
+          <td style="text-align: left;">$65</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Total Guests:</strong></td>
+          <td style="text-align: left;"><span id="totalGuests">0</span></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Total Cost:</strong></td>
+          <td style="text-align: left;"><span id="dayCost">$1188.92</span></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Total Income:</strong></td>
+          <td style="text-align: left;"><span id="totalIncome">$0</span></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Profit:</strong></td>
+          <td style="text-align: left;"><span id="profit">0</span></td>
+        </tr>
+      </table>
     </div>
-    
-    <table id="committeeTable">
+    <!-- </div> -->
+
+    <div id="right">
+      <table id="committeeTable">
         <thead>
-          <tr>
+          <tr style="border-bottom: 2px solid #000;">
             <th>Committee Member</th>
             <th>Guest Commit</th>
+            <th>Registered Attendees</th>
+            <th>Registered Donations</th>
             <th>Income</th>
           </tr>
         </thead>
         <tbody id="committeeBody">
           <!-- Table body will be generated here -->
         </tbody>
-
-    </table>
-    </p>
+      </table>
+    </div>
   </div>
 
-  <script src="js\script.js"></script>
+  <script>
+    const committeeMembers = [
+      { name: 'Alaina', commitment: 0, regAttendees: 0, regDonations: 0 },
+      { name: 'Ashleigh', commitment: 0, regAttendees: 0, regDonations: 0 },
+      { name: 'David', commitment: 0, regAttendees: 0, regDonations: 0 },
+      { name: 'Dawn', commitment: 4, regAttendees: 0, regDonations: 0 },
+      { name: 'Joel', commitment: 4, regAttendees: 1, regDonations: 50 },
+      { name: 'Jon', commitment: 4, regAttendees: 4, regDonations: 25 },
+      { name: 'Justine', commitment: 3, regAttendees: 0, regDonations: 0 },
+      { name: 'Natalie', commitment: 6, regAttendees: 2, regDonations: 100 },
+      { name: 'Ryan', commitment: 0, regAttendees: 0, regDonations: 0 },
+    ];
 
+    // Function to generate table rows
+    function generateTable() {
+      const tableBody = document.getElementById('committeeBody');
+      const totalGuestsCell = document.getElementById('totalGuests');
+      const totalIncomeCell = document.getElementById('totalIncome');
+      const dayCostCell = document.getElementById('dayCost');
+      const profitCell = document.getElementById('profit');
+
+      let totalGuests = 0;
+      let totalIncome = 0;
+
+      // Calculate income for each member
+      committeeMembers.forEach(member => {
+        const income = (member.regAttendees * 65) + member.regDonations;
+        member.income = income;
+        totalGuests += member.regAttendees;
+        totalIncome += income;
+      });
+
+      // Sort committee members by income in descending order
+      committeeMembers.sort((a, b) => b.income - a.income);
+
+      // Clear existing rows
+      tableBody.innerHTML = '';
+
+      // Generate new rows
+      committeeMembers.forEach(member => {
+        const row = document.createElement('tr');
+
+        // Name Cell
+        const nameCell = createTableCell(member.name);
+        row.appendChild(nameCell);
+
+        // Commitment Cell
+        const commitmentCell = createTableCell(member.commitment);
+        row.appendChild(commitmentCell);
+
+        // Registered Attendees Cell
+        const attendeesCell = createTableCell(member.regAttendees);
+        row.appendChild(attendeesCell);
+
+        // Registered Donations Cell
+        const donationsCell = createTableCell('$' + member.regDonations);
+        row.appendChild(donationsCell);
+
+        // Income Cell
+        const incomeCell = createTableCell('$' + member.income.toFixed(2));
+        row.appendChild(incomeCell);
+
+        tableBody.appendChild(row);
+      });
+
+      // Update total guests, total income, and profit
+      totalGuestsCell.textContent = totalGuests;
+      totalIncomeCell.textContent = '$' + totalIncome.toFixed(2);
+
+      // Calculate and update profit
+      const dayCost = parseFloat(dayCostCell.textContent.replace('$', ''));
+      const profit = (totalIncome - dayCost).toFixed(2);
+      profitCell.textContent = '$' + profit;
+    }
+
+    // Function to create a table cell
+    function createTableCell(content) {
+      const cell = document.createElement('td');
+      cell.textContent = content;
+      return cell;
+    }
+
+    // Call the function to generate the table
+    generateTable();
+  </script>
 </body>
 </html>
